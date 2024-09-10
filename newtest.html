@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        table {
+            text-align: center;
+            margin-left: auto;
+            margin-right: auto;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular',
+                         'Lucida Grande', 'Lucida Sans Unicode',
+                         Geneva, Verdana, sans-serif;
+        }
+        input, button {
+            padding: 12px 20px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular',
+                         'Lucida Grande', 'Lucida Sans Unicode',
+                         Geneva, Verdana, sans-serif;
+        }
+        .error {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <div align="center">
+        <h1>Grade Calculator</h1>
+
+        <button onclick="addActivity()" id="addActivity">Add Activity</button>
+
+        <label for="activity">Activity</label>
+        <input type="text" id="activity" size="20">
+
+        <label for="Weight">Weight</label>
+        <input type="text" id="Weight" size="5"><br>
+
+        <button onclick="addGrade()" id="addGrade">Add Grade</button>
+
+        <label for="grade">Grade</label>
+        <input type="text" id="grade" size="5">
+
+        <label for="activityNo">Activity no</label>
+        <input type="text" id="activityNo" size="5"><br>
+
+        <button onclick="deleteActivity()" id="deleteActivity">Delete Activity</button>
+
+        <table border="2" id="theTable" style="width:70%">
+            <tr>
+                <th>No</th>
+                <th>Activity</th>
+                <th>Weight</th>
+                <th>Grade</th>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>Lab1</td>
+                <td>10</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>Lab2</td>
+                <td>20</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>Test1</td>
+                <td>30</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td>Test2</td>
+                <td>40</td>
+                <td></td>
+            </tr>
+        </table>
+        <p id="ERR" class="error">Error Message: </p>
+    </div>
+
+    <script>
+        let noActivity = 4;
+        const totalWeight = 100;
+        const table = document.getElementById('theTable');
+        const ERR = document.getElementById("ERR");
+
+        function addActivity() {
+            const activityInput = document.getElementById('activity').value.trim();
+            const weightInput = document.getElementById('Weight').value.trim();
+
+           
+            if (!activityInput) {
+                ERR.textContent = "Error Message: Activity name is rejected.";
+                return;
+            }
+
+            const weight = parseInt(weightInput, 10);
+            if (!weightInput || isNaN(weight) || weight < 1 || weight > 100) {
+                ERR.textContent = "Error Message: Weight is rejected.";
+                return;
+            }
+
+           
+            noActivity++;
+            const newRow = table.insertRow();
+            newRow.insertCell(0).textContent = noActivity;
+            newRow.insertCell(1).textContent = activityInput;
+            newRow.insertCell(2).textContent = weight;
+            newRow.insertCell(3).textContent = "";
+
+            
+            document.getElementById('activity').value = '';
+            document.getElementById('Weight').value = '';
+            ERR.textContent = "Error Message: ";
+        }
+
+        function deleteActivity() {
+            if (noActivity <= 0) {
+    ERR.textContent = "Error Message: No more activities to remove.";
+    return;
+}
+
+
+table.deleteRow(-1);
+noActivity--;
+ERR.textContent = "Error Message: ";
+
+
+            table.deleteRow(-1);
+            noActivity--;
+            ERR.textContent = "Error Message: ";
+        }
+
+        function addGrade() {
+            const gradeInput = document.getElementById('grade').value.trim();
+            const activityNoInput = document.getElementById('activityNo').value.trim();
+
+          
+            const grade = parseInt(gradeInput, 10);
+            const activityNo = parseInt(activityNoInput, 10);
+
+            if (!activityNoInput || isNaN(activityNo) || activityNo < 1 || activityNo > noActivity) {
+                ERR.textContent = "Error Message: Activity No is rejected.";
+                return;
+            }
+
+            if (!gradeInput || isNaN(grade) || grade < 0 || grade > 100) {
+                ERR.textContent = "Error Message: Grade is rejected.";
+                return;
+            }
+
+            
+            const row = table.rows[activityNo];
+            row.cells[3].textContent = grade;
+
+           
+            document.getElementById('grade').value = '';
+            document.getElementById('activityNo').value = '';
+            ERR.textContent = "Error Message: ";
+        }
+    </script>
+</body>
+</html>
